@@ -6,5 +6,5 @@ Write-Host "Desplegando English Grammar Studio en Firebase (yuwe-ai)..." -Foregr
 firebase deploy --only hosting
 if ($LASTEXITCODE -eq 0) {
   Write-Host ""
-  Write-Host "Listo. Abre: https://yuwe-ai.web.app" -ForegroundColor Green
+  Write-Host "Listo. Abre: https://ingles-grammar-b2.web.app" -ForegroundColor Green
 }

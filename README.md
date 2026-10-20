@@ -12,8 +12,10 @@ npx serve -l 8765 .
 
 ## Publicar en Firebase (recomendado)
 
-Proyecto Firebase: **yuwe-ai**  
-URL tras desplegar: `https://yuwe-ai.web.app` (o el dominio que tengas configurado).
+Proyecto Firebase: **yuwe-ai** · sitio: **ingles-grammar-b2**  
+URL pública: **https://ingles-grammar-b2.web.app**
+
+(No uses `yuwe-ai.web.app` — ese dominio es la app principal Yuwe AI.)
 
 ```bash
 cd ingles-b2

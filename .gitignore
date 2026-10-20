@@ -1,5 +1,6 @@
 node_modules/
 .firebase/
+public/index.html
 *.log
 _check.js
 .DS_Store

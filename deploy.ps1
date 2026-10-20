@@ -1,5 +1,7 @@
 # Publica la página en Firebase Hosting (proyecto yuwe-ai)
 Set-Location $PSScriptRoot
+New-Item -ItemType Directory -Force -Path public | Out-Null
+Copy-Item -Force index.html public\index.html
 Write-Host "Desplegando English Grammar Studio en Firebase (yuwe-ai)..." -ForegroundColor Cyan
 firebase deploy --only hosting
 if ($LASTEXITCODE -eq 0) {

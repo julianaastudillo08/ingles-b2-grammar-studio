@@ -1,20 +1,7 @@
 {
   "hosting": {
-    "public": ".",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**",
-      "**/*.mjs",
-      "ultra-bank.js",
-      "data-extra.js",
-      "writing-extra.js",
-      "mega-bank.js",
-      "build-one-page.mjs",
-      "validate-app.mjs",
-      "reorder-sections.mjs",
-      "README.md"
-    ],
+    "public": "public",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "**",

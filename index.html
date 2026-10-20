@@ -2874,14 +2874,15 @@ Yours sincerely,
       input.className = "gap-input";
       input.autocomplete = "off";
       input.spellcheck = false;
-      if (item.line.includes("___")) {
-        const parts = item.line.split("___");
+      const lineText = item.line || item.q || "Completa: ___";
+      if (lineText.includes("___")) {
+        const parts = lineText.split("___");
         line.append(parts[0]);
         line.appendChild(input);
         line.append(parts[1] || "");
       } else {
         line.appendChild(input);
-        line.append(" " + (item.line || ""));
+        line.append(" " + lineText);
       }
       wrap.appendChild(line);
       const btn = document.createElement("button");
@@ -2889,15 +2890,16 @@ Yours sincerely,
       btn.className = "btn-check-gap";
       btn.textContent = "Comprobar";
       const feedback = createFeedbackEl();
+      const answers = item.answers || [];
       btn.addEventListener("click", () => {
-        const ok = answersMatch(input.value, item.answers);
+        const ok = answers.length && answersMatch(input.value, answers);
         wrap.dataset.answered = "1";
         wrap.dataset.correct = ok ? "1" : "0";
         input.classList.toggle("correct-input", ok);
         input.classList.toggle("wrong-input", !ok);
         input.disabled = true;
         btn.disabled = true;
-        feedback.textContent = (ok ? "✓ " : "✗ ") + (item.explain || item.answers[0]);
+        feedback.textContent = (ok ? "✓ " : "✗ ") + (item.explain || answers[0] || "Revisa la respuesta.");
         feedback.classList.add(ok ? "ok" : "bad");
         onQuizAnswered(wrap);
       });
@@ -3467,6 +3469,7 @@ Yours sincerely,
       const pool = document.getElementById("mockPool");
       const timerEl = document.getElementById("mockTimer");
       const modeTabs = document.getElementById("mockModeTabs");
+      if (!startBtn || !submitBtn || !pool || !timerEl) return;
 
       if (modeTabs) {
         modeTabs.querySelectorAll("button").forEach((btn) => {
@@ -3488,17 +3491,31 @@ Yours sincerely,
       startBtn.addEventListener("click", () => {
         clearActiveTestTimer();
         const bank = getAllExercisePool();
+        if (!bank.length) {
+          document.getElementById("mockScoreLine").textContent = "No hay preguntas en el banco. Recarga la página.";
+          return;
+        }
         const n = Math.min(mockConfig.count, bank.length);
+        startBtn.disabled = true;
+        document.getElementById("mockScoreLine").textContent = "Cargando " + n + " preguntas…";
         lastMockPicked = shuffle(bank).slice(0, n);
         pool.innerHTML = "";
-        document.getElementById("mockReview").hidden = true;
-        lastMockPicked.forEach((item, i) => pool.appendChild(renderQuizItem(item, i)));
-        timerEl.textContent = formatTime(mockConfig.seconds);
-        submitBtn.disabled = false;
-        document.getElementById("mockScoreLine").textContent =
-          "Simulacro en curso (" + n + " preg). Responde y pulsa «Entregar» o espera al cronómetro.";
-        startActiveTestTimer(mockConfig.seconds, timerEl, finishMockExam);
-        pool.scrollIntoView({ behavior: "smooth", block: "start" });
+        const reviewEl = document.getElementById("mockReview");
+        if (reviewEl) reviewEl.hidden = true;
+        requestAnimationFrame(() => {
+          lastMockPicked.forEach((item, i) => {
+            try {
+              pool.appendChild(renderQuizItem(item, i));
+            } catch (_) {}
+          });
+          timerEl.textContent = formatTime(mockConfig.seconds);
+          submitBtn.disabled = false;
+          startBtn.disabled = false;
+          document.getElementById("mockScoreLine").textContent =
+            "Simulacro en curso (" + n + " preg). Responde y pulsa «Entregar» o espera al cronómetro.";
+          startActiveTestTimer(mockConfig.seconds, timerEl, finishMockExam);
+          pool.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
       });
 
       submitBtn.addEventListener("click", finishMockExam);
@@ -3653,7 +3670,16 @@ Yours sincerely,
         h5.textContent = quiz.title;
         h5.dataset.count = "(" + quiz.items.length + " ejercicios)";
         box.appendChild(h5);
-        quiz.items.forEach((item, qi) => box.appendChild(renderQuizItem(item, qi)));
+        quiz.items.forEach((item, qi) => {
+          try {
+            box.appendChild(renderQuizItem(item, qi));
+          } catch (err) {
+            const errEl = document.createElement("p");
+            errEl.className = "quiz-feedback bad";
+            errEl.textContent = "No se pudo cargar el ejercicio " + (qi + 1) + ".";
+            box.appendChild(errEl);
+          }
+        });
       });
     }
 
@@ -3982,10 +4008,10 @@ Yours sincerely,
     insertPartBanners();
     syncSectionNumbers();
     buildNav();
-    renderQuizzes();
     initExamLab();
     initMockExam();
     initTopicTests();
+    renderQuizzes();
     initFlashFriends();
     initNavSearch();
     initStudyPlan();

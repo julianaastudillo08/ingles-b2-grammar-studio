@@ -39,7 +39,7 @@ git push
 firebase deploy --only hosting
 ```
 
-(O usa GitHub Actions si configuraste el workflow en `.github/workflows/firebase-hosting.yml`.)
+**Despliegue automático (opcional):** en [Firebase Console](https://console.firebase.google.com/project/yuwe-ai/hosting) puedes conectar el repo de GitHub para que cada `git push` publique solo.
 
 ## Mantenimiento del banco de preguntas
 

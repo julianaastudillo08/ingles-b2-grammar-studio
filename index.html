@@ -856,6 +856,99 @@
       border-radius: var(--radius-sm);
     }
 
+    .test-lab-section {
+      margin-top: 1.25rem;
+      padding: 1.15rem 1.2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .test-lab-section h5 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      margin: 0 0 0.35rem;
+    }
+
+    .preset-desc {
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      margin-bottom: 0.75rem;
+    }
+
+    .exam-tabs.mock-presets button {
+      font-size: 0.76rem;
+      padding: 0.45rem 0.65rem;
+    }
+
+    .test-review {
+      margin: 1rem 0;
+      padding: 1rem 1.1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      max-height: 420px;
+      overflow-y: auto;
+    }
+
+    .test-review h5 {
+      font-family: var(--font-display);
+      margin: 0 0 0.75rem;
+      color: var(--accent);
+    }
+
+    .review-item {
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+
+    .review-item:last-child { border-bottom: none; }
+
+    .review-item.ok { color: var(--success, #6bcf8a); }
+
+    .review-item.bad { color: var(--text); }
+
+    .review-item strong { display: block; margin-bottom: 0.25rem; }
+
+    .review-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .review-stats span {
+      font-size: 0.78rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+    }
+
+    .topic-test-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .topic-test-controls select {
+      flex: 1;
+      min-width: 200px;
+      padding: 0.5rem 0.65rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text);
+      font-family: var(--font-body);
+    }
+
+    #topicTestPool, #miniTestPool {
+      margin-top: 1rem;
+    }
+
     .flash-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -1987,32 +2080,94 @@ Yours sincerely,
           <div class="exam-pool quiz-box" id="examPool" style="border: none; padding: 0; background: transparent;"></div>
         </div>
         <div class="mock-panel exam-lab" id="mockPanel">
-          <h4 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem;">Simulacro cronometrado — 40 preguntas</h4>
-          <p class="section-intro" style="margin-bottom: 1rem;">Mezcla aleatoria de todo el banco. Elige duración y cantidad de preguntas.</p>
-          <div class="exam-tabs" id="mockModeTabs" style="margin-bottom: 1rem;">
-            <button type="button" class="active" data-mock="40">40 preg · 50 min</button>
-            <button type="button" data-mock="60">60 preg · 75 min</button>
-          </div>
-          <div class="exam-score-panel">
-            <div>
-              <p class="progress-text">Tiempo restante</p>
-              <div class="mock-timer" id="mockTimer">50:00</div>
+          <h4 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem;">Centro de pruebas y retroalimentación</h4>
+          <p class="section-intro" style="margin-bottom: 1rem;">Simulacros con cronómetro, pruebas por tema y repasos cortos. Al entregar verás nota, mensaje de nivel y revisión de cada ítem con explicación.</p>
+
+          <div class="test-lab-section" id="timedTestSection">
+            <h5>Simulacro cronometrado (mezcla total)</h5>
+            <p class="preset-desc" id="mockPresetDesc">40 preguntas · 50 minutos · ~1 min por ítem</p>
+            <div class="exam-tabs mock-presets" id="mockModeTabs" role="tablist">
+              <button type="button" data-count="10" data-seconds="900">10 preg · 15 min</button>
+              <button type="button" data-count="20" data-seconds="1500">20 preg · 25 min</button>
+              <button type="button" data-count="30" data-seconds="1800">30 preg · 30 min</button>
+              <button type="button" class="active" data-count="40" data-seconds="3000">40 preg · 50 min</button>
+              <button type="button" data-count="50" data-seconds="3600">50 preg · 60 min</button>
+              <button type="button" data-count="60" data-seconds="4500">60 preg · 75 min</button>
             </div>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-              <button type="button" class="btn-exam-action primary" id="mockStart">Iniciar nuevo simulacro</button>
-              <button type="button" class="btn-exam-action" id="mockSubmit" disabled>Entregar y ver nota</button>
+            <div class="exam-score-panel">
+              <div>
+                <p class="progress-text">Tiempo restante</p>
+                <div class="mock-timer" id="mockTimer">50:00</div>
+              </div>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" class="btn-exam-action primary" id="mockStart">Iniciar simulacro</button>
+                <button type="button" class="btn-exam-action" id="mockSubmit" disabled>Entregar y ver retroalimentación</button>
+              </div>
             </div>
+            <p class="progress-text" id="mockScoreLine" style="margin: 0.75rem 0;">Pulsa «Iniciar simulacro» para cargar preguntas.</p>
+            <div id="mockReview" class="test-review" hidden></div>
+            <div class="exam-pool quiz-box" id="mockPool" style="border: none; padding: 0; background: transparent;"></div>
           </div>
-          <p class="progress-text" id="mockScoreLine" style="margin-bottom: 0.75rem;">Pulsa «Iniciar» para cargar preguntas.</p>
-          <p class="nav-label">Últimos simulacros</p>
+
+          <div class="test-lab-section" id="topicTestSection">
+            <h5>Prueba por tema (aparte)</h5>
+            <p class="preset-desc">Solo preguntas del área elegida. Ideal para repasar un módulo antes del simulacro completo.</p>
+            <div class="topic-test-controls">
+              <select id="topicTestSelect" aria-label="Elegir tema de prueba">
+                <option value="grammar1">Parte I — Tiempos, futuro, condicionales, modales</option>
+                <option value="structure">Parte II — Pasiva, reported, relativas, wish, inversión, gerundios</option>
+                <option value="lexis">Parte III — Artículos, conectores, phrasals, prep., formación, concordancia, comparativos, preguntas</option>
+                <option value="skills">Parte IV — Escritura, falsos amigos, idioms, reading</option>
+                <option value="examprep">Parte V — Estrategias, irregulares, collocations, AWL</option>
+                <option value="type:gap">Solo completar huecos</option>
+                <option value="type:choice">Solo opción múltiple</option>
+                <option value="type:match">Solo relacionar columnas</option>
+                <option value="type:order">Solo unir oraciones</option>
+                <option value="type:error">Solo corregir error</option>
+                <option value="type:cloze">Solo texto con huecos</option>
+              </select>
+              <select id="topicTestSize" aria-label="Cantidad de preguntas">
+                <option value="15">15 preguntas</option>
+                <option value="20" selected>20 preguntas</option>
+                <option value="30">30 preguntas</option>
+              </select>
+              <label style="font-size:0.82rem;display:flex;align-items:center;gap:0.35rem;">
+                <input type="checkbox" id="topicTestUseTimer" checked> Cronómetro (25 min)
+              </label>
+            </div>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin-bottom:0.5rem;">
+              <div class="mock-timer" id="topicTestTimerDisplay" style="font-size:1.35rem;">25:00</div>
+              <button type="button" class="btn-exam-action primary" id="topicTestStart">Iniciar prueba por tema</button>
+              <button type="button" class="btn-exam-action" id="topicTestSubmit" disabled>Entregar tema</button>
+            </div>
+            <p class="progress-text" id="topicTestScoreLine">Elige tema y pulsa iniciar.</p>
+            <div id="topicTestReview" class="test-review" hidden></div>
+            <div class="exam-pool quiz-box" id="topicTestPool" style="border: none; padding: 0; background: transparent;"></div>
+          </div>
+
+          <div class="test-lab-section">
+            <h5>Repasos rápidos</h5>
+            <div class="express-box" style="margin-top:0;">
+              <p class="nav-label" style="margin-bottom: 0.5rem;">Mini test (10 preg · 15 min, con retroalimentación)</p>
+              <button type="button" class="btn-exam-action primary" id="miniTestStart">Iniciar mini test</button>
+              <button type="button" class="btn-exam-action" id="miniTestSubmit" disabled>Entregar mini test</button>
+              <span class="mock-timer" id="miniTestTimer" style="font-size:1.2rem;margin-left:0.75rem;">15:00</span>
+              <p class="progress-text" id="miniTestScoreLine" style="margin-top:0.5rem;"></p>
+              <div id="miniTestReview" class="test-review" hidden></div>
+              <div id="miniTestPool" style="margin-top: 1rem;"></div>
+            </div>
+            <div class="express-box" style="margin-top:0.75rem;">
+              <p class="nav-label" style="margin-bottom: 0.5rem;">Repaso express (5 preguntas, sin cronómetro)</p>
+              <button type="button" class="btn-exam-action primary" id="expressStart">Empezar repaso express</button>
+              <button type="button" class="btn-exam-action" id="expressSubmit" disabled>Ver resultado express</button>
+              <p class="progress-text" id="expressScoreLine" style="margin-top:0.5rem;"></p>
+              <div id="expressPool" style="margin-top: 1rem;"></div>
+            </div>
+            <button type="button" class="btn-exam-action" id="randomTen" style="margin-top: 0.75rem;">10 preguntas aleatorias en el banco (sin cronómetro)</button>
+          </div>
+
+          <p class="nav-label" style="margin-top:1rem;">Historial de simulacros cronometrados</p>
           <ul class="history-list" id="mockHistory"></ul>
-          <div class="express-box">
-            <p class="nav-label" style="margin-bottom: 0.5rem;">Repaso express (5 preguntas al azar)</p>
-            <button type="button" class="btn-exam-action primary" id="expressStart">Empezar repaso rápido</button>
-            <div id="expressPool" style="margin-top: 1rem;"></div>
-          </div>
-          <button type="button" class="btn-exam-action" id="randomTen" style="margin-top: 1rem;">10 preguntas aleatorias en el banco</button>
-          <div class="exam-pool quiz-box" id="mockPool" style="border: none; padding: 0; background: transparent;"></div>
         </div>
         <button type="button" class="mark-done" data-mark="ecaes">Marcar simulacro como repasado</button>
       </article>
@@ -2698,8 +2853,11 @@ Yours sincerely,
             if (i === item.correct) b.classList.add("correct");
             else if (i === oi) b.classList.add("wrong");
           });
-          feedback.textContent = item.explain || "";
-          feedback.classList.add(oi === item.correct ? "ok" : "bad");
+          const isOk = oi === item.correct;
+          feedback.textContent = isOk
+            ? "✓ " + (item.explain || "Correcto.")
+            : "✗ " + (item.explain || "") + (item.options ? " → Correcta: «" + item.options[item.correct] + "»." : "");
+          feedback.classList.add(isOk ? "ok" : "bad");
           onQuizAnswered(wrap);
         });
         opts.appendChild(btn);
@@ -3087,7 +3245,8 @@ Yours sincerely,
         .map((h) => {
           const d = new Date(h.date);
           const when = d.toLocaleDateString("es-CO", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
-          return "<li>" + when + " — <strong>" + h.correct + "/" + h.total + "</strong> (" + h.pct + "%)</li>";
+          const tag = h.title ? "<em>" + h.title + "</em> — " : "";
+          return "<li>" + when + " — " + tag + "<strong>" + h.correct + "/" + h.total + "</strong> (" + h.pct + "%)</li>";
         })
         .join("");
     }
@@ -3266,9 +3425,6 @@ Yours sincerely,
       }
     }
 
-    let mockTimerId = null;
-    let mockSecondsLeft = 0;
-
     function formatTime(sec) {
       const m = Math.floor(sec / 60);
       const s = sec % 60;
@@ -3282,32 +3438,28 @@ Yours sincerely,
       if (answered > 0) line.textContent = `Progreso: ${answered}/${total} respondidas · ${correct} correctas hasta ahora.`;
     }
 
-    function finishMockExam() {
-      if (mockTimerId) {
-        clearInterval(mockTimerId);
-        mockTimerId = null;
-      }
-      document.getElementById("mockPool").querySelectorAll(".btn-check-gap").forEach((b) => {
-        if (!b.disabled) b.click();
-      });
-      const pool = document.getElementById("mockPool");
-      const { correct, total } = scoreExamItems(pool);
-      const pct = total ? Math.round((correct / total) * 100) : 0;
-      const timerEl = document.getElementById("mockTimer");
-      timerEl.classList.remove("warning");
-      document.getElementById("mockSubmit").disabled = true;
-      document.getElementById("mockScoreLine").innerHTML =
-        `<strong style="color: var(--accent); font-size: 1.1rem;">Nota: ${correct}/${total} (${pct}%)</strong> — ` +
-        (pct >= 80 ? "Excelente nivel B2+." : pct >= 60 ? "Buen camino; repasa condicionales y tiempos." : "Sigue practicando con el banco por tema.");
-      try {
-        const hist = JSON.parse(localStorage.getItem("grammarStudioB2_mockHistory") || "[]");
-        hist.unshift({ date: new Date().toISOString(), correct, total, pct });
-        localStorage.setItem("grammarStudioB2_mockHistory", JSON.stringify(hist.slice(0, 10)));
-      } catch (_) {}
-      renderMockHistory();
+    let mockConfig = { count: 40, seconds: 3000, label: "40 preg · 50 min" };
+
+    function updateMockPresetDesc() {
+      const el = document.getElementById("mockPresetDesc");
+      if (!el) return;
+      const min = Math.round(mockConfig.seconds / 60);
+      el.textContent =
+        mockConfig.count + " preguntas · " + min + " minutos · mezcla de todo el banco (~" + Math.max(1, Math.round(min / mockConfig.count)) + " min/preg)";
     }
 
-    let mockConfig = { count: 40, seconds: 50 * 60 };
+    function finishMockExam() {
+      finishTestSession({
+        root: document.getElementById("mockPool"),
+        reviewEl: document.getElementById("mockReview"),
+        scoreLineEl: document.getElementById("mockScoreLine"),
+        timerEl: document.getElementById("mockTimer"),
+        picked: lastMockPicked,
+        title: "Simulacro " + mockConfig.label,
+        saveMockHistory: true,
+        submitBtn: document.getElementById("mockSubmit")
+      });
+    }
 
     function initMockExam() {
       const startBtn = document.getElementById("mockStart");
@@ -3321,45 +3473,98 @@ Yours sincerely,
           btn.addEventListener("click", () => {
             modeTabs.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
             btn.classList.add("active");
-            const n = parseInt(btn.dataset.mock, 10);
-            mockConfig = n === 60 ? { count: 60, seconds: 75 * 60 } : { count: 40, seconds: 50 * 60 };
+            mockConfig = {
+              count: parseInt(btn.dataset.count, 10),
+              seconds: parseInt(btn.dataset.seconds, 10),
+              label: btn.textContent.trim()
+            };
             timerEl.textContent = formatTime(mockConfig.seconds);
+            updateMockPresetDesc();
           });
         });
       }
+      updateMockPresetDesc();
 
       startBtn.addEventListener("click", () => {
-        if (mockTimerId) clearInterval(mockTimerId);
-        const picked = shuffle(getAllExercisePool()).slice(0, mockConfig.count);
+        clearActiveTestTimer();
+        const bank = getAllExercisePool();
+        const n = Math.min(mockConfig.count, bank.length);
+        lastMockPicked = shuffle(bank).slice(0, n);
         pool.innerHTML = "";
-        picked.forEach((item, i) => pool.appendChild(renderQuizItem(item, i)));
-        mockSecondsLeft = mockConfig.seconds;
-        timerEl.textContent = formatTime(mockSecondsLeft);
-        timerEl.classList.remove("warning");
+        document.getElementById("mockReview").hidden = true;
+        lastMockPicked.forEach((item, i) => pool.appendChild(renderQuizItem(item, i)));
+        timerEl.textContent = formatTime(mockConfig.seconds);
         submitBtn.disabled = false;
         document.getElementById("mockScoreLine").textContent =
-          `Simulacro en curso (${picked.length} preg). Responde y pulsa «Entregar» o espera al cronómetro.`;
-        mockTimerId = setInterval(() => {
-          mockSecondsLeft--;
-          timerEl.textContent = formatTime(mockSecondsLeft);
-          if (mockSecondsLeft <= 300) timerEl.classList.add("warning");
-          if (mockSecondsLeft <= 0) finishMockExam();
-        }, 1000);
+          "Simulacro en curso (" + n + " preg). Responde y pulsa «Entregar» o espera al cronómetro.";
+        startActiveTestTimer(mockConfig.seconds, timerEl, finishMockExam);
+        pool.scrollIntoView({ behavior: "smooth", block: "start" });
       });
 
-      submitBtn.addEventListener("click", () => finishMockExam());
+      submitBtn.addEventListener("click", finishMockExam);
+
+      document.getElementById("miniTestStart")?.addEventListener("click", () => {
+        const ep = document.getElementById("miniTestPool");
+        const review = document.getElementById("miniTestReview");
+        review.hidden = true;
+        ep.innerHTML = "";
+        lastMiniPicked = shuffle(getAllExercisePool()).slice(0, 10);
+        lastMiniPicked.forEach((item, i) => ep.appendChild(renderQuizItem(item, i)));
+        document.getElementById("miniTestSubmit").disabled = false;
+        document.getElementById("miniTestScoreLine").textContent = "Mini test en curso (10 preg).";
+        startActiveTestTimer(15 * 60, document.getElementById("miniTestTimer"), () =>
+          document.getElementById("miniTestSubmit")?.click()
+        );
+      });
+
+      document.getElementById("miniTestSubmit")?.addEventListener("click", () => {
+        finishTestSession({
+          root: document.getElementById("miniTestPool"),
+          reviewEl: document.getElementById("miniTestReview"),
+          scoreLineEl: document.getElementById("miniTestScoreLine"),
+          timerEl: document.getElementById("miniTestTimer"),
+          picked: lastMiniPicked,
+          title: "Mini test 15 min",
+          saveMockHistory: false,
+          submitBtn: document.getElementById("miniTestSubmit")
+        });
+      });
 
       document.getElementById("expressStart")?.addEventListener("click", () => {
         const ep = document.getElementById("expressPool");
         ep.innerHTML = "";
-        shuffle(getAllExercisePool()).slice(0, 5).forEach((item, i) => ep.appendChild(renderQuizItem(item, i)));
+        lastExpressPicked = shuffle(getAllExercisePool()).slice(0, 5);
+        lastExpressPicked.forEach((item, i) => ep.appendChild(renderQuizItem(item, i)));
+        document.getElementById("expressSubmit").disabled = false;
+        const oldNote = ep.querySelector(".express-result");
+        if (oldNote) oldNote.remove();
+      });
+
+      document.getElementById("expressSubmit")?.addEventListener("click", () => {
+        const ep = document.getElementById("expressPool");
+        finalizePendingItems(ep);
+        const { correct, total } = scoreExamItems(ep, true);
+        const pct = total ? Math.round((correct / total) * 100) : 0;
+        let note = ep.querySelector(".express-result");
+        if (!note) {
+          note = document.createElement("div");
+          note.className = "test-review express-result";
+          ep.appendChild(note);
+        }
+        note.hidden = false;
+        note.innerHTML = buildTestReview(ep, lastExpressPicked);
+        document.getElementById("expressSubmit").disabled = true;
+        const line = document.getElementById("expressScoreLine");
+        if (line) {
+          line.innerHTML =
+            "<strong>Express: " + correct + "/" + total + " (" + pct + "%)</strong> — " + getLevelFeedback(pct);
+        }
       });
 
       document.getElementById("randomTen")?.addEventListener("click", () => {
         examFilter = "all";
         document.querySelectorAll("#examTabs button").forEach((b) => b.classList.toggle("active", b.dataset.filter === "all"));
-        const poolAll = getAllExercisePool();
-        const picked = shuffle(poolAll).slice(0, 10);
+        const picked = shuffle(getAllExercisePool()).slice(0, 10);
         const examPool = document.getElementById("examPool");
         examPool.innerHTML = "";
         const h5 = document.createElement("h5");
@@ -3371,6 +3576,53 @@ Yours sincerely,
       });
 
       renderMockHistory();
+    }
+
+    function initTopicTests() {
+      const startBtn = document.getElementById("topicTestStart");
+      const submitBtn = document.getElementById("topicTestSubmit");
+      const pool = document.getElementById("topicTestPool");
+      const timerEl = document.getElementById("topicTestTimerDisplay");
+      const timerCheck = document.getElementById("topicTestUseTimer");
+
+      if (!startBtn || !pool) return;
+
+      startBtn.addEventListener("click", () => {
+        clearActiveTestTimer();
+        const bundleId = document.getElementById("topicTestSelect").value;
+        const size = parseInt(document.getElementById("topicTestSize").value, 10);
+        let bank = getTopicPool(bundleId);
+        if (!bank.length) bank = getMasterExamBank();
+        const n = Math.min(size, bank.length);
+        lastTopicPicked = shuffle(bank).slice(0, n);
+        pool.innerHTML = "";
+        document.getElementById("topicTestReview").hidden = true;
+        lastTopicPicked.forEach((item, i) => pool.appendChild(renderQuizItem(item, i)));
+        submitBtn.disabled = false;
+        const label = document.getElementById("topicTestSelect").selectedOptions[0]?.textContent || "Tema";
+        document.getElementById("topicTestScoreLine").textContent = "Prueba por tema en curso: " + label + " (" + n + " preg).";
+        if (timerCheck && timerCheck.checked) {
+          startActiveTestTimer(25 * 60, timerEl, () => submitBtn.click());
+        } else if (timerEl) {
+          timerEl.textContent = "—";
+          timerEl.classList.remove("warning");
+        }
+        pool.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      submitBtn.addEventListener("click", () => {
+        const label = document.getElementById("topicTestSelect").selectedOptions[0]?.textContent?.slice(0, 40) || "Tema";
+        finishTestSession({
+          root: pool,
+          reviewEl: document.getElementById("topicTestReview"),
+          scoreLineEl: document.getElementById("topicTestScoreLine"),
+          timerEl: timerEl,
+          picked: lastTopicPicked,
+          title: "Prueba: " + label,
+          saveMockHistory: false,
+          submitBtn: submitBtn
+        });
+      });
     }
 
     function buildNav() {
@@ -3412,17 +3664,203 @@ Yours sincerely,
       return getMasterExamBank().filter((x) => x.type === examFilter);
     }
 
-    function scoreExamItems(root) {
-      const items = root.querySelectorAll(".quiz-item");
+    function getTopLevelQuizItems(root) {
+      return Array.from(root.querySelectorAll(".quiz-item")).filter((el) => !el.parentElement.closest(".quiz-item"));
+    }
+
+    function scoreExamItems(root, countUnansweredAsWrong) {
+      const items = getTopLevelQuizItems(root);
       let answered = 0;
       let correct = 0;
       items.forEach((el) => {
         if (el.dataset.answered) {
           answered++;
           if (el.dataset.correct === "1") correct++;
+        } else if (countUnansweredAsWrong) {
+          answered++;
         }
       });
       return { answered, correct, total: items.length };
+    }
+
+    const TOPIC_TEST_BUNDLES = {
+      grammar1: { quizKeys: ["tenses", "future", "conditionals", "modals"] },
+      structure: { quizKeys: ["passive", "reported", "relatives", "wish", "inversion", "participles"] },
+      lexis: { quizKeys: ["articles", "connectors", "phrasal", "prepositions", "wordformation", "agreement", "comparatives", "questions"] },
+      skills: { quizKeys: ["writing", "falsefriends", "idioms", "reading"] },
+      examprep: { quizKeys: ["strategies", "irregular", "collocations", "vocab"] }
+    };
+
+    function getTopicPool(bundleId) {
+      if (bundleId.startsWith("type:")) {
+        const t = bundleId.slice(5);
+        return getMasterExamBank().filter((i) => i.type === t);
+      }
+      const keys = TOPIC_TEST_BUNDLES[bundleId]?.quizKeys || [];
+      const items = [];
+      keys.forEach((k) => {
+        const q = QUIZZES[k];
+        if (!q) return;
+        q.items.forEach((it) => items.push(...flattenExercise(it)));
+      });
+      return items;
+    }
+
+    function getLevelFeedback(pct) {
+      if (pct >= 85) return "Excelente — nivel sólido B2/C1. Sigue con simulacros largos.";
+      if (pct >= 70) return "Muy bien — buen B2; repasa los ítems marcados en rojo abajo.";
+      if (pct >= 55) return "Aprobado en camino — refuerza tiempos verbales y conectores.";
+      return "Sigue practicando por tema y vuelve a intentar un mini test de 15 min.";
+    }
+
+    function getItemSummary(item) {
+      if (!item) return "Ítem";
+      if (item.q) return item.q.length > 90 ? item.q.slice(0, 90) + "…" : item.q;
+      if (item.line) return item.line.length > 90 ? item.line.slice(0, 90) + "…" : item.line;
+      if (item.title) return "Reading: " + item.title;
+      return TYPE_LABELS[item.type] || item.type || "Pregunta";
+    }
+
+    function buildTestReview(root, picked) {
+      const tops = getTopLevelQuizItems(root);
+      const byType = {};
+      tops.forEach((el) => {
+        const t = el.dataset.quizType || "?";
+        if (!byType[t]) byType[t] = { ok: 0, bad: 0 };
+        if (el.dataset.correct === "1") byType[t].ok++;
+        else byType[t].bad++;
+      });
+      let html = "<h5>Retroalimentación detallada</h5><div class=\"review-stats\">";
+      Object.keys(byType).forEach((t) => {
+        html += "<span>" + (TYPE_LABELS[t] || t) + ": " + byType[t].ok + " ✓ · " + byType[t].bad + " ✗</span>";
+      });
+      html += "</div>";
+      tops.forEach((el, i) => {
+        const ok = el.dataset.correct === "1";
+        const item = picked[i];
+        const fb = el.querySelector(".quiz-feedback");
+        let detail = fb && fb.textContent ? fb.textContent : item && item.explain ? item.explain : "";
+        if (item && item.type === "reading" && el.dataset.readingDetail) {
+          detail = "Subpreguntas correctas: " + el.dataset.readingDetail + ". " + detail;
+        }
+        if (!ok && item && item.answers && item.answers[0]) {
+          detail += (detail ? " " : "") + "→ Respuesta esperada: «" + item.answers[0] + "».";
+        }
+        html +=
+          "<div class=\"review-item " +
+          (ok ? "ok" : "bad") +
+          "\"><strong>" +
+          (ok ? "✓" : "✗") +
+          " " +
+          (i + 1) +
+          ". " +
+          getItemSummary(item) +
+          "</strong>" +
+          (detail ? "<br>" + detail : "") +
+          "</div>";
+      });
+      return html;
+    }
+
+    function finalizePendingItems(root) {
+      getTopLevelQuizItems(root).forEach((wrap) => {
+        wrap.querySelectorAll(".btn-check-gap").forEach((b) => {
+          if (!b.disabled) b.click();
+        });
+        if (wrap.dataset.quizType === "reading") {
+          const subs = wrap.querySelectorAll(".sub-quiz .quiz-item");
+          let ok = 0;
+          const total = subs.length;
+          subs.forEach((s) => {
+            if (!s.dataset.answered) {
+              s.dataset.answered = "1";
+              s.dataset.correct = "0";
+            }
+            if (s.dataset.correct === "1") ok++;
+          });
+          if (!wrap.dataset.answered) {
+            wrap.dataset.answered = "1";
+            wrap.dataset.correct = ok === total ? "1" : "0";
+          }
+          wrap.dataset.readingDetail = ok + "/" + total;
+        }
+        if (!wrap.dataset.answered) {
+          wrap.dataset.answered = "1";
+          wrap.dataset.correct = "0";
+          const fb = wrap.querySelector(":scope > .quiz-feedback") || wrap.querySelector(".quiz-feedback");
+          if (fb && !fb.textContent.trim()) {
+            fb.textContent = "✗ Sin respuesta — repasa este formato en el módulo correspondiente.";
+            fb.classList.add("bad");
+          }
+        }
+      });
+    }
+
+    let activeTestTimer = null;
+    let activeTestSeconds = 0;
+    let lastMockPicked = [];
+    let lastTopicPicked = [];
+    let lastMiniPicked = [];
+    let lastExpressPicked = [];
+
+    function clearActiveTestTimer() {
+      if (activeTestTimer) clearInterval(activeTestTimer);
+      activeTestTimer = null;
+    }
+
+    function startActiveTestTimer(seconds, displayEl, onTimeUp) {
+      clearActiveTestTimer();
+      activeTestSeconds = seconds;
+      if (displayEl) {
+        displayEl.textContent = formatTime(activeTestSeconds);
+        displayEl.classList.remove("warning");
+      }
+      activeTestTimer = setInterval(() => {
+        activeTestSeconds--;
+        if (displayEl) {
+          displayEl.textContent = formatTime(activeTestSeconds);
+          if (activeTestSeconds <= 300) displayEl.classList.add("warning");
+        }
+        if (activeTestSeconds <= 0) {
+          clearActiveTestTimer();
+          onTimeUp();
+        }
+      }, 1000);
+    }
+
+    function finishTestSession(opts) {
+      const { root, reviewEl, scoreLineEl, timerEl, picked, title, saveMockHistory, submitBtn } = opts;
+      clearActiveTestTimer();
+      if (timerEl) timerEl.classList.remove("warning");
+      if (submitBtn) submitBtn.disabled = true;
+      finalizePendingItems(root);
+      const { correct, total } = scoreExamItems(root, true);
+      const pct = total ? Math.round((correct / total) * 100) : 0;
+      scoreLineEl.innerHTML =
+        "<strong style=\"color: var(--accent); font-size: 1.1rem;\">" +
+        title +
+        ": " +
+        correct +
+        "/" +
+        total +
+        " (" +
+        pct +
+        "%)</strong> — " +
+        getLevelFeedback(pct);
+      if (reviewEl) {
+        reviewEl.hidden = false;
+        reviewEl.innerHTML = buildTestReview(root, picked);
+        reviewEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+      if (saveMockHistory) {
+        try {
+          const hist = JSON.parse(localStorage.getItem("grammarStudioB2_mockHistory") || "[]");
+          hist.unshift({ date: new Date().toISOString(), correct, total, pct, title });
+          localStorage.setItem("grammarStudioB2_mockHistory", JSON.stringify(hist.slice(0, 12)));
+        } catch (_) {}
+        renderMockHistory();
+      }
+      return { correct, total, pct };
     }
 
     function updateExamScore() {
@@ -3547,6 +3985,7 @@ Yours sincerely,
     renderQuizzes();
     initExamLab();
     initMockExam();
+    initTopicTests();
     initFlashFriends();
     initNavSearch();
     initStudyPlan();

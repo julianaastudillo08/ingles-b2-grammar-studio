@@ -1,0 +1,6 @@
+node_modules/
+.firebase/
+*.log
+_check.js
+.DS_Store
+Thumbs.db

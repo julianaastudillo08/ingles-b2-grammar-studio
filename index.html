@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1419" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>English Grammar Studio — B2+</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1137,8 +1140,109 @@
       content: attr(data-count);
       font-size: 0.72rem;
       font-weight: 500;
-      color: var(--text-muted);
+      color: var(--text-soft);
       margin-left: 0.5rem;
+    }
+
+    .card {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    @media (max-width: 960px) {
+      main {
+        max-width: none;
+        width: 100%;
+        padding-top: 0.5rem;
+      }
+      .section { scroll-margin-top: 4.25rem; }
+      .sidebar {
+        width: min(100vw, 300px);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+      }
+      .mobile-header {
+        padding-top: max(0.75rem, env(safe-area-inset-top, 0));
+        padding-left: max(1rem, env(safe-area-inset-left, 0));
+        padding-right: max(1rem, env(safe-area-inset-right, 0));
+      }
+      .hero-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+      }
+      .stat-pill { flex: 1 1 calc(50% - 0.5rem); min-width: 9rem; }
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding-left: max(0.85rem, env(safe-area-inset-left, 0));
+        padding-right: max(0.85rem, env(safe-area-inset-right, 0));
+      }
+      .hero h2 { font-size: 1.85rem; }
+      .hero p { font-size: 0.95rem; }
+      .section-header h3 { font-size: 1.35rem; }
+      .quiz-box { padding: 1rem; }
+      .exam-lab { padding: 1rem; }
+      .test-lab-section { padding: 1rem; }
+      .grammar-table { font-size: 0.78rem; }
+      .grammar-table th, .grammar-table td { padding: 0.45rem 0.5rem; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .exam-score-panel {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .exam-score-panel > div:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .exam-score-panel .btn-exam-action { width: 100%; justify-content: center; }
+      .exam-tabs.mock-presets {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.35rem;
+        margin-right: -0.25rem;
+      }
+      .exam-tabs.mock-presets button { flex: 0 0 auto; white-space: nowrap; }
+      .writing-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 0.25rem;
+      }
+      .writing-tabs button { flex: 0 0 auto; white-space: nowrap; }
+      .topic-test-controls { flex-direction: column; align-items: stretch; }
+      .topic-test-controls select { min-width: 0; width: 100%; }
+      .topic-test-controls label { width: 100%; }
+      .mock-timer { font-size: 1.55rem; }
+      .quick-jump a { flex: 1 1 auto; text-align: center; min-width: calc(50% - 0.5rem); }
+      .quiz-options button,
+      .btn-check-gap,
+      .btn-exam-action,
+      .menu-btn,
+      .mark-done {
+        min-height: 44px;
+        font-size: 0.9rem;
+      }
+      .order-chip { min-height: 40px; display: inline-flex; align-items: center; }
+      .gap-input { min-width: 5rem; width: 100%; max-width: 100%; margin: 0.35rem 0; display: block; }
+      .gap-line { line-height: 1.65; }
+      .reading-passage { max-height: 220px; font-size: 0.88rem; }
+      .part-banner h3 { font-size: 1.35rem; }
+      .course-map ol { margin-left: 1rem; }
+      .test-review { max-height: 50vh; }
+      .tip { flex-direction: column; }
+      .tip strong { white-space: normal; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
     }
 
     footer {
@@ -2908,6 +3012,13 @@ Yours sincerely,
     }
 
     function renderMatchItem(wrap, item) {
+      if (!item.left || !item.right || !item.pairs) {
+        const err = createFeedbackEl();
+        err.textContent = "Ejercicio de relacionar incompleto.";
+        err.classList.add("bad");
+        wrap.appendChild(err);
+        return;
+      }
       const grid = document.createElement("div");
       grid.className = "match-grid";
       const shuffled = item.right.map((text, i) => ({ text, i })).sort(() => Math.random() - 0.5);
@@ -2950,6 +3061,13 @@ Yours sincerely,
     }
 
     function renderOrderItem(wrap, item) {
+      if (!item.parts || !item.order || item.parts.length !== item.order.length) {
+        const err = createFeedbackEl();
+        err.textContent = "Ejercicio de ordenar incompleto.";
+        err.classList.add("bad");
+        wrap.appendChild(err);
+        return;
+      }
       const parts = item.parts.map((p, i) => ({ p, i }));
       const shuffled = [...parts].sort(() => Math.random() - 0.5);
       const picked = [];
@@ -3470,6 +3588,7 @@ Yours sincerely,
       const timerEl = document.getElementById("mockTimer");
       const modeTabs = document.getElementById("mockModeTabs");
       if (!startBtn || !submitBtn || !pool || !timerEl) return;
+      startBtn.dataset.mockBound = "1";
 
       if (modeTabs) {
         modeTabs.querySelectorAll("button").forEach((btn) => {
@@ -3976,6 +4095,8 @@ Yours sincerely,
       body.dataset.theme = next;
       localStorage.setItem(THEME_KEY, next);
       themeBtn.textContent = next === "dark" ? "Modo claro" : "Modo oscuro";
+      const metaTheme = document.querySelector('meta[name="theme-color"]:not([media])');
+      if (metaTheme) metaTheme.content = next === "dark" ? "#0f1419" : "#f4f1ea";
     });
 
     const sidebar = document.getElementById("sidebar");
@@ -4019,6 +4140,19 @@ Yours sincerely,
     updateHeroStats();
     updateProgressUI();
     initScrollSpy();
+    runAppHealthCheck();
+
+    function runAppHealthCheck() {
+      const problems = [];
+      if (!document.getElementById("mockStart")?.dataset.mockBound) problems.push("simulacro");
+      if (!document.getElementById("examTabs")?.children.length) problems.push("banco");
+      const bank = typeof getMasterExamBank === "function" ? getMasterExamBank().length : 0;
+      if (bank < 200) problems.push("preguntas");
+      document.body.dataset.appReady = problems.length ? "partial" : "ok";
+      if (problems.length) {
+        console.warn("[Grammar Studio] Revisa:", problems.join(", "));
+      }
+    }
   </script>
 </body>
 </html>
